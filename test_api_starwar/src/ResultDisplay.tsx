@@ -1,42 +1,53 @@
-// import { useState } from "react";
-
 interface resultDisplayProp {
     data: { name: string };
     status: number;
     error: any;
-    display: string;
-    setDisplay: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const ResultDisplay: React.FC<resultDisplayProp> = ({ data, status, error, display, setDisplay }) => {
+const ResultDisplay: React.FC<resultDisplayProp> = ({ data, status, error }) => {
     if (error) {
-        setDisplay(String(error));
+        return (
+            <div>
+                <p>{String(error)}</p>
+            </div>
+        );
     } else {
         switch (status) {
             case 500:
-                setDisplay("500: Internal Server Error");
-                break;
+                return (
+                    <div>
+                        <p>{"500: Internal Server Error"}</p>
+                    </div>
+                );
             case 418:
-                setDisplay("418: I'm a tea pot");
-                break;
+                return (
+                    <div>
+                        <p>{"418: I'm a tea pot"}</p>
+                    </div>
+                );
             case 200:
                 if (data !== undefined) {
-                    setDisplay(data?.name);
+                    return (
+                        <div>
+                            <p>{data?.name}</p>
+                        </div>
+                    );
                 } else {
-                    setDisplay("data undefined");
+                    return (
+                        <div>
+                            <p>{"data undefined"}</p>
+                        </div>
+                    );
                 }
-                break;
+
             default:
-                setDisplay("Unknown status code");
-                break;
+                return (
+                    <div>
+                        <p>{"Unknown status code"}</p>
+                    </div>
+                );
         }
     }
-
-    return (
-        <div>
-            <p>{display}</p>
-        </div>
-    );
 };
 
 export default ResultDisplay;

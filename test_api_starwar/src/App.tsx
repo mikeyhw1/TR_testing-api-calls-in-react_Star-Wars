@@ -7,10 +7,10 @@ export const baseUrl = "https://swapi.dev/api/";
 function App() {
     const [data, setData] = useState<{ name: string }>({ name: "default" });
     const [isFetching, setIsFetching] = useState(true);
-    const [urlPath, setUrlPath] = useState<string>("people/1/");
     const [status, setStatus] = useState<number>(0);
     const [error, setError] = useState<any>("");
-    const [display, setDisplay] = useState<string>("default");
+
+    const urlPath = "people/1/";
 
     useEffect(() => {
         const fetchData = async () => {
@@ -18,6 +18,8 @@ function App() {
                 try {
                     const response = await fetch(`${baseUrl}${urlPath}`);
                     setIsFetching(false);
+                    console.log(`response.status: ${response.status}`);
+
                     if (response.status === 200) {
                         const json = await response.json();
                         setData(json);
@@ -35,7 +37,7 @@ function App() {
             }
         };
         fetchData();
-    }, []);
+    }, [urlPath]);
 
     function isError(e: unknown): e is Error {
         return (e as Error).message !== undefined;
@@ -46,7 +48,8 @@ function App() {
             <header className="App-header">
                 <div className="TopDiv"></div>
                 <p>isFetching: {isFetching ? "TRUE" : "FALSE"}</p>
-                <ResultDisplay data={data} status={status} error={error} display={display} setDisplay={setDisplay} />
+                <p>status: {status}</p>
+                <ResultDisplay data={data} status={status} error={error} />
             </header>
         </div>
     );
